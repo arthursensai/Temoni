@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
         pathname: "/avatars/**",
       },
     ],
+    qualities: [75, 95],
   },
 };
 

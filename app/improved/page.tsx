@@ -11,17 +11,40 @@ const Page = async () => {
   const allowedUsers = await prisma.allowedUser.findMany({
     include: {
       user: true,
-    }
+    },
   });
-  console.log(allowedUsers);
 
   return (
     <section className="w-full min-h-screen flex items-center justify-center gap-12 main-bg">
-      {allowedUsers.map((user) => (
+      {allowedUsers.map((allowedUser) => (
         <div
-          key={user.name}
-          className={`flex flex-col items-center gap-6 justify-between transition-all hover:scale-110  hover:bg-indigo-500 hover:p-4 group`}
-        ></div>
+          key={allowedUser.name}
+          style={
+            {
+              ["--hover-color" as string]:
+                allowedUser.user?.bannerColor ?? "#5865F2",
+            } as React.CSSProperties
+          }
+          className={
+            `flex flex-col items-center gap-6 justify-between transition-all ` +
+            `hover:scale-110 hover:p-4 group [&:hover]:bg-[var(--hover-color)]`
+          }
+        >
+          <Image
+            src={`${allowedUser.user?.image}?size=2048`}
+            quality={95}
+            alt={`${allowedUser.user?.name} profile picture`}
+            width={200}
+            height={200}
+            className="rounded-[72px]"
+            unoptimized
+            loading="eager"
+          />
+          <h1 className="text-3xl font-black group-hover:text-white/95">
+            {allowedUser.user?.username}
+          </h1>
+          <DiscordLoginButton as={allowedUser.user?.name as string} />
+        </div>
       ))}
     </section>
   );

@@ -3,7 +3,6 @@ import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
 
 const Page = async () => {
   const session = await getServerSession(authOptions);
@@ -11,8 +10,6 @@ const Page = async () => {
   if (session) {
     redirect("/dashboard");
   }
-
-  const allowedUsers = await prisma.allowedUser.findMany();
 
   return (
     <section className="w-full min-h-screen flex items-center justify-center gap-12 main-bg">

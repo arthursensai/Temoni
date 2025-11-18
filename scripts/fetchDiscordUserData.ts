@@ -1,5 +1,4 @@
 export const fetchDiscordUserData = async (accessToken: string) => {
-  console.log(`Access Token in fetchUserData: ${accessToken}`);
 
   try {
     const response = await fetch("https://discord.com/api/v10/users/@me", {
