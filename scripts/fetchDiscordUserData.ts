@@ -1,20 +1,21 @@
-import { DiscordUser } from "next-auth";
-
 export const fetchDiscordUserData = async (accessToken: string) => {
+  console.log(`Access Token in fetchUserData: ${accessToken}`);
+
   try {
     const response = await fetch("https://discord.com/api/v10/users/@me", {
+      method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    const json: DiscordUser = await response.json();
+    const data = await response.json();
 
-    return json;
+    return data;
   } catch (err) {
     console.log(err);
     return false;
   }
 };
 
-export default fetchDiscordUserData
+export default fetchDiscordUserData;

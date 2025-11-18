@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { DiscordTokenResponse, DiscordUser, getServerSession } from "next-auth";
+import { getServerSession, DiscordUser } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
-import refreshDiscordToken from "@/scripts/refreshDiscordToken";
 import fetchDiscordUserData from "@/scripts/fetchDiscordUserData";
+import validateUserTokens from "@/scripts/validateUserTokens";
 
 export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    console.log(session);
 
     if (!session)
       return NextResponse.json({ error: "Unauthorized", status: 401 });
@@ -32,31 +31,20 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    const newTokens: DiscordTokenResponse = await refreshDiscordToken(
-      userAccount?.refresh_token
+    const accessToken = await validateUserTokens(
+      session.user.discordId,
+      userAccount
     );
 
-    if (!newTokens)
-      return NextResponse.json({ error: "Internal Server Error", status: 500 });
-
-    await prisma.account.update({
-      where: {
-        provider_providerAccountId: {
-          provider: "discord",
-          providerAccountId: session.user.discordId,
-        },
-      },
-      data: {
-        access_token: newTokens.access_token,
-        ...(newTokens.refresh_token && {
-          refresh_token: newTokens.refresh_token,
-        }),
-      },
-    });
+    if (!accessToken)
+      return NextResponse.json({
+        error: "Internal Server Error",
+        status: 500,
+      });
 
     try {
-      const userDiscordData = await fetchDiscordUserData(
-        newTokens.access_token
+      const userDiscordData: DiscordUser = await fetchDiscordUserData(
+        accessToken!
       );
 
       if (!userDiscordData)
@@ -65,26 +53,28 @@ export async function GET(req: NextRequest) {
           status: 500,
         });
 
-      const updated = await prisma.user.update({
-        where: {
-          discordId: userDiscordData.id,
-        },
-        data: {
-          name: userDiscordData.username,
-          username: userDiscordData.global_name,
-          bannerColor: userDiscordData.banner,
-          email: userDiscordData.email,
-          emailVerified: userDiscordData.verified,
-        },
-      });
-
-      if (!updated)
-        return NextResponse.json({
-          error: "Your data is not updated",
-          status: 500,
+      try {
+        const updated = await prisma.user.update({
+          where: {
+            discordId: userDiscordData.id,
+          },
+          data: {
+            name: userDiscordData.username,
+            username: userDiscordData.global_name,
+            bannerColor: userDiscordData.banner_color,
+            email: userDiscordData.email,
+            emailVerified: userDiscordData.verified,
+          },
         });
 
-      return NextResponse.json({ data: updated, status: 200 });
+        return NextResponse.json({ data: updated, status: 200, ok: true });
+      } catch (err) {
+        console.log(err);
+        return NextResponse.json({
+          error: "Internal Server Error",
+          status: 500,
+        });
+      }
     } catch (err) {
       console.log(err);
       return NextResponse.json({ error: "Internal Server Error", status: 500 });

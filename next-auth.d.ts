@@ -29,7 +29,7 @@ declare module "next-auth" {
     global_name?: string | null;
     discriminator: string;
     avatar?: string | null;
-    banner?: string | null;
+    banner_color?: string | null;
     accent_color?: number | null;
     locale?: string | null;
     mfa_enabled?: boolean;
