@@ -1,4 +1,3 @@
-import { User } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -26,25 +25,24 @@ const ProfileButton = async () => {
   return (
     <Dialog>
       <DialogTrigger className="relative">
-        <div className="group absolute right-0 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 bg-white rounded-3xl overflow-hidden cursor-pointer hover:w-32 transition-all duration-300 ease-in-out z-10 ring-black hover:ring-2 shadow-2xl">
-          <div
-            className="absolute inset-0 flex items-center justify-center
-                      opacity-100 group-hover:opacity-0
-                      transition-opacity duration-300 ease-in-out"
-          >
-            <div className="bg-white rounded-full p-1">
-              <User size={24} color="#35353E" />
-            </div>
-          </div>
-
-          <h3
-            className="absolute inset-0 flex items-center justify-center
-                 text-xl font-semibold text-gray-800 whitespace-nowrap
-                 opacity-0 group-hover:opacity-100
-                 transition-opacity duration-300 ease-in-out"
-          >
-            profile
-          </h3>
+        <div
+          className="flex gap-2 items-center justify-between p-2 rounded-2xl [&:hover]:bg-(--hover-color) transition-all ease-out hover:cursor-pointer hover:ring-2 ring-black"
+          style={
+            {
+              ["--hover-color" as string]: user?.bannerColor ?? "black",
+            } as React.CSSProperties
+          }
+        >
+          <h3 className="font-bold">{user?.name}</h3>
+          <Image
+            src={user?.image as string}
+            alt={user?.name as string}
+            width={32}
+            height={32}
+            loading="eager"
+            unoptimized
+            className="rounded-full ring-2 ring-black"
+          />
         </div>
       </DialogTrigger>
       <DialogContent className="flex flex-col gap-4 text-black">

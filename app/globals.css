@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@import "uploadthing/tw/v4";
+@source "../node_modules/@uploadthing/react/dist";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -44,7 +47,7 @@
 
 @layer utilities {
   .main-bg {
-    @apply bg-[url(/wallpaper.png)] bg-no-repeat bg-cover;
+    @apply bg-[url(/new_wallpaper.jpg)] bg-no-repeat bg-cover;
   }
 }
 
@@ -131,4 +134,8 @@ body {
   html, body {
     @apply h-full w-full overflow-x-hidden;
   }
+}
+
+@theme {
+  --blur-2xs: 2px; 
 }

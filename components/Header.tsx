@@ -2,7 +2,7 @@ import ProfileButton from "./Profile";
 
 const Header = () => {
   return (
-    <header className="py-4 flex w-full items-center justify-around gap-4 bg-black/30 backdrop-blur-lg">
+    <header className="py-4 flex w-full items-center justify-around gap-4 bg-black/10 backdrop-blur-xs">
       <h1 className="text-2xl font-bold text-shadow-md">Tomoni</h1>
 
       <ProfileButton />

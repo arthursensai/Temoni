@@ -27,7 +27,7 @@ const Page = async () => {
           }
           className={
             `flex flex-col items-center gap-6 justify-between transition-all ` +
-            `hover:scale-110 hover:p-4 group [&:hover]:bg-[var(--hover-color)]`
+            `hover:scale-110 hover:p-4 group [&:hover]:bg-(--hover-color)`
           }
         >
           <Image
