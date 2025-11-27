@@ -47,12 +47,21 @@
 
 @layer utilities {
   .main-bg {
-    @apply bg-[url(/new_wallpaper.jpg)] bg-no-repeat bg-cover;
+    @apply bg-[url(/wallpaper.webp)] bg-no-repeat bg-cover;
   }
 }
 
-body {
-  color: white;
+:root {
+  --color-primary: hsl(230, 50%, 90%);
+  --color-secondary: hsl(230, 50%, 10%);
+  --color-tertiary: hsl(290, 80%, 20%);
+  --color-accent: hsl(170, 80%, 20%);
+}
+.dark {
+  --color-primary: hsl(230, 50%, 10%);
+  --color-secondary: hsl(230, 50%, 90%);
+  --color-tertiary: hsl(290, 80%, 80%);
+  --color-accent: hsl(170, 80%, 80%);
 }
 
 :root {
@@ -129,13 +138,9 @@ body {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-white/90;
   }
   html, body {
     @apply h-full w-full overflow-x-hidden;
   }
-}
-
-@theme {
-  --blur-2xs: 2px; 
 }

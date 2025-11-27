@@ -22,6 +22,9 @@ const ProfileButton = async () => {
     redirect("/");
   }
 
+  console.log(session.user)
+
+
   return (
     <Dialog>
       <DialogTrigger className="relative">
@@ -41,36 +44,33 @@ const ProfileButton = async () => {
             height={32}
             loading="eager"
             unoptimized
+            quality={95}
             className="rounded-full ring-2 ring-black"
           />
         </div>
       </DialogTrigger>
       <DialogContent className="flex flex-col gap-4 text-black">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-3 text-2xl">
+          <DialogTitle className="flex items-center justify-center">
             <Image
-              src={user.image as string}
+              src={`${user?.image}?size=2048`}
               alt={user.name!}
               width={64}
               height={64}
-              className="rounded-full ring-2 ring-black"
+              className="rounded-full ring-4 ring-black"
               unoptimized
+              quality={95}
             />
-            Your Account
           </DialogTitle>
-          <DialogDescription className="text-start">
-            You can find your account details here.
+          <DialogDescription className="text-center">
+            {user.username}
           </DialogDescription>
-          <div className="flex flex-col items-start justify-center gap-2 text-xl">
-            <p>username: {user.username}</p>
-            <p>email: {user.email}</p>
-            <p className="flex gap-2 items-center justify-center">
-              Profile banner:
-              <span
-                className="w-4 h-4 rounded-full"
-                style={{ backgroundColor: user.bannerColor! }}
-              ></span>
-            </p>
+          <div className="flex items-center gap-2">
+            <h3>Profile banner:</h3>
+            <span
+              className="w-4 h-4 rounded-full"
+              style={{ backgroundColor: user.bannerColor as string }}
+            ></span>
           </div>
         </DialogHeader>
         <DialogFooter>

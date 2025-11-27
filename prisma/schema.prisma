@@ -5,6 +5,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  //ignore it
+  url      = env("DATABASE_URL")
 }
 
 model Account {
@@ -50,6 +52,12 @@ model User {
 
   accounts Account[]
   sessions Session[]
+
+  partnerLinkA PartnerLink? @relation("UserA")
+  partnerLinkB PartnerLink? @relation("UserB")
+
+  sender   TomorrowLetter[] @relation(name: "sender")
+  receiver TomorrowLetter[] @relation(name: "receiver")
 }
 
 model VerificationToken {
@@ -67,4 +75,32 @@ model AllowedUser {
   name      String?
 
   user User?
+}
+
+model PartnerLink {
+  id String @id @default(cuid())
+
+  userAId String @unique
+  userBId String @unique
+
+  userA User @relation("UserA", fields: [userAId], references: [id])
+  userB User @relation("UserB", fields: [userBId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model TomorrowLetter {
+  id          String  @id @default(cuid())
+  title       String
+  content     String
+  cover       String?
+  receiveDate String
+  receiveTime String
+
+  saved_at DateTime @default(now())
+
+  senderId   String
+  receiverId String
+  sender     User   @relation(name: "sender", fields: [senderId], references: [id])
+  receiver   User   @relation(name: "receiver", fields: [receiverId], references: [id])
 }

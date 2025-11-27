@@ -20,13 +20,13 @@ const QuoteBox = () => {
         const data = await res.json();
         setQuote(data.quote);
       } catch (err) {
-        setQuote(null)
+        setQuote(null);
       }
     };
     getQuote();
   }, []);
   return (
-    <p className="text-2xl w-3/4 text-center font-bold">
+    <p className="text-xl w-full lg:w-3/4 text-center font-bold">
       &ldquo;{quote ?? FallBackQuote}&ldquo;
     </p>
   );

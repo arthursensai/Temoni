@@ -1,5 +1,5 @@
 import { Account } from "@/app/generated/prisma/client";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/database/prisma";
 import { DiscordTokenResponse } from "next-auth";
 
 const discordClientID = process.env.DISCORD_CLIENT_ID;
