@@ -7,7 +7,7 @@ const DiscordLoginButton = (props: { as: string }) => {
 
   return (
     <button
-      className="ring-2 shadow-2xl hover:ring-3 hover:ring-black px-4 py-2 hover:px-6 transition-all rounded-2xl bg-white text-black hover:cursor-pointer font-black"
+      className="ring-2 shadow-2xl hover:ring-3 hover:ring-black px-4 py-2 hover:px-6 transition-all rounded-2xl bg-white text-black hover:cursor-pointer font-black md:text-xl lg:text-2xl"
       onClick={() => {
         
         signIn("discord");

@@ -5,8 +5,31 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  //ignore it
-  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  discordId     String   @unique
+  name          String?
+  username      String?
+  email         String?  @unique
+  emailVerified Boolean? @default(false)
+  image         String?
+  bannerColor   String?
+
+  allowedUser   AllowedUser? @relation(fields: [allowedUserId], references: [id])
+  allowedUserId String?      @unique
+
+  accounts Account[]
+  sessions Session[]
+
+  // 1:1 partner relations
+  partnerLinkA PartnerLink? @relation("UserA")
+  partnerLinkB PartnerLink? @relation("UserB")
+
+  // letters
+  sender   TomorrowLetter[] @relation("sender")
+  receiver TomorrowLetter[] @relation("receiver")
 }
 
 model Account {
@@ -35,29 +58,6 @@ model Session {
   expires      DateTime
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model User {
-  id            String   @id @default(cuid())
-  discordId     String   @unique
-  name          String?
-  username      String?
-  email         String?  @unique
-  emailVerified Boolean? @default(false)
-  image         String?
-  bannerColor   String?
-
-  allowedUser   AllowedUser? @relation(fields: [allowedUserId], references: [id])
-  allowedUserId String?      @unique
-
-  accounts Account[]
-  sessions Session[]
-
-  partnerLinkA PartnerLink? @relation("UserA")
-  partnerLinkB PartnerLink? @relation("UserB")
-
-  sender   TomorrowLetter[] @relation(name: "sender")
-  receiver TomorrowLetter[] @relation(name: "receiver")
 }
 
 model VerificationToken {
@@ -101,6 +101,7 @@ model TomorrowLetter {
 
   senderId   String
   receiverId String
-  sender     User   @relation(name: "sender", fields: [senderId], references: [id])
-  receiver   User   @relation(name: "receiver", fields: [receiverId], references: [id])
+
+  sender   User @relation("sender", fields: [senderId], references: [id])
+  receiver User @relation("receiver", fields: [receiverId], references: [id])
 }

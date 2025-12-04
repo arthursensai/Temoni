@@ -81,6 +81,10 @@ export const authOptions: NextAuthOptions = {
     },
   },
 
+  pages: {
+    error: "/auth/error"
+  },
+
   secret: process.env.AUTH_SECRET,
   adapter: PrismaAdapter(prisma),
   session: {

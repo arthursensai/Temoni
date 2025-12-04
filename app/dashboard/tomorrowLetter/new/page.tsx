@@ -19,6 +19,7 @@ import { addDays, format } from "date-fns";
 import Image from "next/image";
 import uploadImageToServer from "@/scripts/uploadImageToServer";
 import { redirect } from "next/navigation";
+import { Spinner } from "@/components/ui/spinner";
 
 const Page = () => {
   const { data: session, status } = useSession();
@@ -57,7 +58,7 @@ const Page = () => {
 
     if (step === TotalSteps) {
       try {
-        const isLetterDataValid = letterSchema.parse(letterData);
+        const validLetterData = letterSchema.parse(letterData);
 
         const imageData = await uploadImageToServer(imageFile);
 
@@ -134,6 +135,14 @@ const Page = () => {
 
   return (
     <section className="relative w-full flex-col min-h-screen p-6 flex items-center justify-center">
+      {status === "loading" && (
+        <div className="border-4 border-black w-full rounded-2xl p-4 flex items-start justify-center bg-white text-black gap-3 lg:w-1/3">
+          <Spinner
+            className="size-12 text-purple-500 self-center"
+          />
+          <h1 className="text-3xl lg:text-5xl">Checking Profile...</h1>
+        </div>
+      )}
       {status === "authenticated" && (
         <form
           className="border-4 border-black w-full rounded-2xl p-4 flex flex-col items-start justify-center bg-white text-black gap-5 lg:w-1/3"
