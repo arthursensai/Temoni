@@ -14,6 +14,9 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: "Studying together",
   description: "Made By ~ARTHUR for his ~Raven ❤️",
+  icons: {
+    icon: "web_icon.svg"
+  },
 };
 
 export default function RootLayout({
